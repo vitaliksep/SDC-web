@@ -1,0 +1,49 @@
+# docker-compose.yml — локальный запуск production-образа
+# Переименуйте в docker-compose.yml перед использованием
+
+version: "3.9"
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_CREATE_ENV: production
+
+    container_name: shirokov-deus-capital
+
+    ports:
+      - "3000:3000"
+
+    # Runtime-переменные: секреты через .env файл или переменные окружения хоста
+    # Никогда не коммитьте .env с реальными секретами
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - NEXT_PUBLIC_CREATE_ENV=production
+      - NEXT_PUBLIC_CREATE_APP_URL=${NEXT_PUBLIC_CREATE_APP_URL}
+      - NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
+      - AUTH_SECRET=${AUTH_SECRET}
+      - AUTH_URL=${AUTH_URL}
+      - BETTER_AUTH_SECRET=${BETTER_AUTH_SECRET}
+      - BETTER_AUTH_URL=${BETTER_AUTH_URL}
+
+    restart: unless-stopped
+
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+        reservations:
+          cpus: "0.25"
+          memory: 256M

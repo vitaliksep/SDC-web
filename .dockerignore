@@ -1,0 +1,47 @@
+# Next.js build output
+.next
+out
+
+# Dependencies (устанавливаются внутри Docker)
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Git / IDE
+.git
+.gitignore
+.gitattributes
+.github
+.vscode
+.idea
+*.swp
+*.swo
+
+# Env-файлы (секреты передаются через runtime env, не через образ)
+.env
+.env.*
+!.env.example
+
+# Dev / test
+*.test.*
+*.spec.*
+__tests__
+coverage
+.jest*
+
+# TypeScript build info
+*.tsbuildinfo
+
+# Документация и метафайлы
+README.md
+CHANGELOG.md
+DEPLOY_INSTRUCTIONS.md
+
+# OS
+.DS_Store
+Thumbs.db
+*.pem
+
+# Vercel
+.vercel
